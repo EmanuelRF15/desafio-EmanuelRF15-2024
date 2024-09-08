@@ -7,6 +7,15 @@ class RecintosZoo {
             { numero: 4, bioma: "rio", capacidade: 8, animais: [] },
             { numero: 5, bioma: "savana", capacidade: 9, animais: [{especie: "LEAO", quantidade: 1, tamnaho: 3}] },
         ];
+
+        this.animal = [
+            {especie: "LEAO", tamanho: 3, biomas: ["savana"]},
+            {especie: "LEOPARDO", tamanho: 2, biomas: ["savana"]},
+            {especie: "CROCODILO", tamanho: 3, biomas: ["rio"]},
+            {especie: "MACACO", tamanho: 1, biomas: ["floresta", "savana"]},
+            {especie: "GAZELA", tamanho: 2, biomas: ["savana"]},
+            {especie: "HIPOPOTAMO", tamanho: 3, biomas: ["rio", "savana"]},
+        ];
     }
 
     analisaRecintos(animal, quantidade) {
