@@ -9,16 +9,17 @@ class RecintosZoo {
         ];
 
         this.animal = [
-            {especie: "LEAO", tamanho: 3, biomas: ["savana"]},
-            {especie: "LEOPARDO", tamanho: 2, biomas: ["savana"]},
-            {especie: "CROCODILO", tamanho: 3, biomas: ["rio"]},
-            {especie: "MACACO", tamanho: 1, biomas: ["floresta", "savana"]},
-            {especie: "GAZELA", tamanho: 2, biomas: ["savana"]},
-            {especie: "HIPOPOTAMO", tamanho: 3, biomas: ["rio", "savana"]},
+            {especie: "LEAO", tamanho: 3, biomas: ["savana"], carnivoro: true},
+            {especie: "LEOPARDO", tamanho: 2, biomas: ["savana"], carnivoro: true},
+            {especie: "CROCODILO", tamanho: 3, biomas: ["rio"], carnivoro: true},
+            {especie: "MACACO", tamanho: 1, biomas: ["floresta", "savana"], carnivoro: false},
+            {especie: "GAZELA", tamanho: 2, biomas: ["savana"], carnivoro: false},
+            {especie: "HIPOPOTAMO", tamanho: 3, biomas: ["rio", "savana"], carnivoro: false},
         ];
     }
 
     analisaRecintos(animal, quantidade) {
+
     }
 
 }
