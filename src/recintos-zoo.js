@@ -38,7 +38,7 @@ class RecintosZoo {
             if (recinto.animais.some(a => a.especie.especie !== infoAnimal.especie)) {
                 espacoExtra = 1;
             }
-            if(!recinto.bioma.some(b => infoAnimal.biomas.includes(b)) || (recinto.animais.some(a => a.especie.especie !== infoAnimal.especie) && infoAnimal.carnivoro) || (recinto.animais.some(a => a.especie.carnivoro) && !infoAnimal.carnivoro) || (infoAnimal.especie === "HIPOPOTAMO" && !(recinto.bioma.includes('savana') && recinto.bioma.includes('rio')) && recinto.animais.some(a => a.especie.especie !== 'HIPOPOTAMO'))) {
+            if(!recinto.bioma.some(b => infoAnimal.biomas.includes(b)) || (recinto.animais.some(a => a.especie.especie !== infoAnimal.especie) && infoAnimal.carnivoro) || (recinto.animais.some(a => a.especie.carnivoro) && !infoAnimal.carnivoro) || (infoAnimal.especie === "HIPOPOTAMO" && !(recinto.bioma.includes('savana') && recinto.bioma.includes('rio')) && recinto.animais.some(a => a.especie.especie !== 'HIPOPOTAMO')) || (infoAnimal.especie === "MACACO" && (quantidade < 2 && recinto.animais.length === 0))) {
                 continue;
             }
         
