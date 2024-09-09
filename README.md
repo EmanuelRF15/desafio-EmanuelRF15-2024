@@ -133,3 +133,5 @@ export { RecintosZoo as RecintosZoo };
 Se todos os passos forem seguidos corretamente, você terá um repositório como o da figura abaixo (lembrando que é permitido criar mais arquivos), onde `seuUsername` é o seu usuário do GitHub, que você informou no questionário da Gupy.
 
 ![Exemplo de repositório](https://startdbstorage.blob.core.windows.net/filecontainer/imagem-estrutura.png)
+
+Obs: Os primeiros commits estão com uma conta diferente que uso para testes. Não avia percebido que o nome de usuario estava diferente, até porque quando criei o repositorio, criei direto pelo VS code e foi para a conta certa do git. 
