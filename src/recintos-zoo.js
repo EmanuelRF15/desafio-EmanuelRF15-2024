@@ -1,25 +1,26 @@
 class RecintosZoo {
     constructor (){
-        this.recintos = [
-            { numero: 1, bioma: "savana", capacidade: 10, animais: [{especie: "MACACO", quantidade: 3, tamanho: 1}] },
-            { numero: 2, bioma: "floresta", capacidade: 5, animais: [] },
-            { numero: 3, bioma: "savana e rio", capacidade: 7, animais: [{especie: "GAZELA", quantidade: 1, tamanho: 2}] },
-            { numero: 4, bioma: "rio", capacidade: 8, animais: [] },
-            { numero: 5, bioma: "savana", capacidade: 9, animais: [{especie: "LEAO", quantidade: 1, tamanho: 3}] },
+        this.animaisPermitidos = [
+            {especie: 'LEAO', tamanho: 3, biomas: ['savana'], carnivoro: true},
+            {especie: 'LEOPARDO', tamanho: 2, biomas: ['savana'], carnivoro: true},
+            {especie: 'CROCODILO', tamanho: 3, biomas: ['rio'], carnivoro: true},
+            {especie: 'MACACO', tamanho: 1, biomas: ['floresta', 'savana'], carnivoro: false},
+            {especie: 'GAZELA', tamanho: 2, biomas: ['savana'], carnivoro: false},
+            {especie: 'HIPOPOTAMO', tamanho: 3, biomas: ['rio', 'savana'], carnivoro: false},
         ];
 
-        this.animaisPermitidos = [
-            {especie: "LEAO", tamanho: 3, biomas: ["savana"], carnivoro: true},
-            {especie: "LEOPARDO", tamanho: 2, biomas: ["savana"], carnivoro: true},
-            {especie: "CROCODILO", tamanho: 3, biomas: ["rio"], carnivoro: true},
-            {especie: "MACACO", tamanho: 1, biomas: ["floresta", "savana"], carnivoro: false},
-            {especie: "GAZELA", tamanho: 2, biomas: ["savana"], carnivoro: false},
-            {especie: "HIPOPOTAMO", tamanho: 3, biomas: ["rio", "savana"], carnivoro: false},
+        this.recintos = [
+            { numero: 1, bioma: ['savana'], capacidade: 10, animais: [{especie: this.animaisPermitidos.filter(a => a.especie === 'MACACO'), quantidade: 3}] },
+            { numero: 2, bioma: ['floresta'], capacidade: 5, animais: [] },
+            { numero: 3, bioma: ['rio', 'savana'], capacidade: 7, animais: [{especie: this.animaisPermitidos.filter(a => a.especie === 'GAZELA'), quantidade: 1}] },
+            { numero: 4, bioma: ['rio'], capacidade: 8, animais: [] },
+            { numero: 5, bioma: ['savana'], capacidade: 9, animais: [{especie: this.animaisPermitidos.filter(a => a.especie === 'LEAO'), quantidade: 1}] },
         ];
     }
 
     analisaRecintos(animal, quantidade) {
-        if(!this.animaisPermitidos[animal]) {
+        animal = animal.toUpperCase();
+        if(!this.animaisPermitidos.some(a => a.especie === animal)) {
             return { erro: "Animal inválido", recintosViaveis: null };
         }
 
@@ -27,17 +28,20 @@ class RecintosZoo {
             return { erro: "Quantidade inválida", recintosViaveis: null };
         }
 
-        const infoAnimal = this.animaisPermitidos[animal];
+        const infoAnimal = this.animaisPermitidos.filter(a => a.especie === animal);
         const recintosViaveis = [];
-        const espacosNecessarios = quantidade * infoAnimal.tamanho;
+        const espacosNecessarios = quantidade * infoAnimal[0].tamanho;
 
         for(const recinto of this.recintos) {
-            let espacoOcupado = recinto.animais.reduce((total, a) => total + (a.tamanho * a.quantidade), 0);
-            let espacoExtra = (recinto.animais.length > 0 && infoAnimal.carnivoro===false) ? 1 : 0;
-            if(!infoAnimal.biomas.includes(recinto.bioma) || recinto.animais.length > 0 && infoAnimal.carnivoro===true || infoAnimal.especie === "HIPOPOTAMO" && recinto.bioma !== "savana e rio") {
+            let espacoOcupado = recinto.animais.reduce((total, a) => total + (a.especie[0].tamanho * a.quantidade), 0);
+            let espacoExtra = 0;
+            if (recinto.animais.some(a => a.especie[0].especie !== infoAnimal[0].especie)) {
+                espacoExtra = 1;
+            }
+            if(!recinto.bioma.some(b => infoAnimal[0].biomas.includes(b)) || (recinto.animais.some(a => a.especie[0].especie !== infoAnimal[0].especie) && infoAnimal[0].carnivoro) || (recinto.animais.some(a => a.especie[0].carnivoro) && !infoAnimal[0].carnivoro) || (infoAnimal[0].especie === "HIPOPOTAMO" && !recinto.bioma.every(b => ['savana', 'rio'].includes(b)))) {
                 continue;
             }
-
+        
             const espacoDisponivel = recinto.capacidade - espacoOcupado - espacoExtra;
             if(espacoDisponivel >= espacosNecessarios) {
                 recintosViaveis.push(`Recinto ${recinto.numero} (espaço livre: ${espacoDisponivel - espacosNecessarios} total: ${recinto.capacidade})`);
@@ -45,7 +49,7 @@ class RecintosZoo {
         }
 
         if(recintosViaveis.length === 0) {
-            return { erro: "Não há recintos viáveis", recintosViaveis: null };
+            return { erro: "Não há recinto viável", recintosViaveis: null };
         }
         return { erro: null, recintosViaveis: recintosViaveis.sort() };
     }
