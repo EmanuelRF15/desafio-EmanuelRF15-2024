@@ -10,11 +10,11 @@ class RecintosZoo {
         ];
 
         this.recintos = [//create a list of enclosures in the zoo with the animals that are already in them
-            { numero: 1, bioma: ['savana'], capacidade: 10, animais: [{especie: this.animaisPermitidos.find(a => a.especie === 'MACACO'), quantidade: 3}] },
+            { numero: 1, bioma: ['savana'], capacidade: 10, animais: [{especie: this.animaisPermitidos.find(animalPermitido => animalPermitido.especie === 'MACACO'), quantidade: 3}] },
             { numero: 2, bioma: ['floresta'], capacidade: 5, animais: [] },
-            { numero: 3, bioma: ['rio', 'savana'], capacidade: 7, animais: [{especie: this.animaisPermitidos.find(a => a.especie === 'GAZELA'), quantidade: 1}] },
+            { numero: 3, bioma: ['rio', 'savana'], capacidade: 7, animais: [{especie: this.animaisPermitidos.find(animalPermitido => animalPermitido.especie === 'GAZELA'), quantidade: 1}] },
             { numero: 4, bioma: ['rio'], capacidade: 8, animais: [] },
-            { numero: 5, bioma: ['savana'], capacidade: 9, animais: [{especie: this.animaisPermitidos.find(a => a.especie === 'LEAO'), quantidade: 1}] },
+            { numero: 5, bioma: ['savana'], capacidade: 9, animais: [{especie: this.animaisPermitidos.find(animalPermitido => animalPermitido.especie === 'LEAO'), quantidade: 1}] },
         ];
     }
 
@@ -23,7 +23,7 @@ class RecintosZoo {
         animal = animal.toUpperCase();//convert the animal name to uppercase
 
         //check if the animal is in the list of animals that can be in the zoo
-        if(!this.animaisPermitidos.some(a => a.especie === animal)) {
+        if(!this.animaisPermitidos.some(animalPermitido => animalPermitido.especie === animal)) {
             return { erro: "Animal inválido", recintosViaveis: null };
         }
 
@@ -33,7 +33,7 @@ class RecintosZoo {
         }
 
         //create a array with the information of the animal using the name of the animal
-        const infoAnimal = this.animaisPermitidos.find(a => a.especie === animal);
+        const infoAnimal = this.animaisPermitidos.find(animalPermitido => animalPermitido.especie === animal);
 
         //create a array to store the enclosures that are viable for the animal
         const recintosViaveis = [];
@@ -44,31 +44,31 @@ class RecintosZoo {
         //check if the enclosures are viable for the animal
         for(const recinto of this.recintos) {
             //calculate the space occupied by the animals in the enclosure
-            let espacoOcupado = recinto.animais.reduce((total, a) => total + (a.especie.tamanho * a.quantidade), 0);
+            let espacoOcupado = recinto.animais.reduce((total, animalPermitido) => total + (animalPermitido.especie.tamanho * animalPermitido.quantidade), 0);
             
             //check if the enclosure has animals of another species
             let espacoExtra = 0;
-            if (recinto.animais.some(a => a.especie.especie !== infoAnimal.especie)) {
+            if (recinto.animais.some(animalPermitido => animalPermitido.especie.especie !== infoAnimal.especie)) {
                 espacoExtra = 1;
             }
             
             //check if the enclosure biomes are compatible with the animal biomes
-            if(!recinto.bioma.some(b => infoAnimal.biomas.includes(b))) {
+            if(!recinto.bioma.some(biomaPermitido => infoAnimal.biomas.includes(biomaPermitido))) {
                 continue;
             }
 
             //check if the enclosure has carnivorous animals and the animal is not carnivorous
-            else if (recinto.animais.some(a => a.especie.especie !== infoAnimal.especie) && infoAnimal.carnivoro) {
+            else if (recinto.animais.some(animalPermitido => animalPermitido.especie.especie !== infoAnimal.especie) && infoAnimal.carnivoro) {
                 continue;
             }
 
             //check if the enclosure has herbivorous animals and the animal is carnivorous
-            else if(recinto.animais.some(a => a.especie.carnivoro) && !infoAnimal.carnivoro){
+            else if(recinto.animais.some(animalPermitido => animalPermitido.especie.carnivoro) && !infoAnimal.carnivoro){
                 continue;
             }
 
             //check if the enclosure has a hippopotamus and the biomes are not savanna and river and if there are other animals species in the enclosure
-            else if(infoAnimal.especie === "HIPOPOTAMO" && !(recinto.bioma.includes('savana') && recinto.bioma.includes('rio')) && recinto.animais.some(a => a.especie.especie !== 'HIPOPOTAMO')){
+            else if(infoAnimal.especie === "HIPOPOTAMO" && !(recinto.bioma.includes('savana') && recinto.bioma.includes('rio')) && recinto.animais.some(animalPermitido => animalPermitido.especie.especie !== 'HIPOPOTAMO')){
                 continue;
             }
 
